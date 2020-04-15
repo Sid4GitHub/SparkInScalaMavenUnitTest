@@ -13,17 +13,9 @@ object Driver {
     val spark=GetSparkSession.getSession()
     import spark.implicits._
 
-    val r1=Seq(
-      Row("t1"),
-      Row("t2")
-    )
-
     val schemaTab1 = Encoders.product[A].schema
 
-    val tab1 = spark.createDataFrame(
-      spark.sparkContext.parallelize(r1),
-      schemaTab1
-    )
+    val tab1 = Seq("t1","t2").toDF
 
     val r2=Seq(
       Row("t3"),

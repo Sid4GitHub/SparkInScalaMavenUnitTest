@@ -34,8 +34,7 @@ class TestCases extends FunSuite with DataFrameSuiteBase{
     val r3=Seq(
       Row("t1",1),
       Row("t2",2),
-      Row("t3",3),
-      Row("t3",3),
+      Row("t3",3),      
       Row("t4",4)
     )
 
