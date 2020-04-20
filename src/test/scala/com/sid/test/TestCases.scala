@@ -11,37 +11,11 @@ class TestCases extends FunSuite with DataFrameSuiteBase{
 
     val schema=StructType(Array(StructField("col1",StringType,false),StructField("col2",DataTypes.IntegerType,false)))
 
-    val r1=Seq(
-      Row("t1",1),
-      Row("t2",2)
-    )
-
-    val tab1 = spark.createDataFrame(
-      spark.sparkContext.parallelize(r1),
-      schema
-    )
-
-    val r2=Seq(
-      Row("t3",3),
-      Row("t4",4)
-    )
-
-    val tab2 = spark.createDataFrame(
-      spark.sparkContext.parallelize(r2),
-      schema
-    )
-
-    val r3=Seq(
-      Row("t1",1),
-      Row("t2",2),
-      Row("t3",3),      
-      Row("t4",4)
-    )
-
-    val expDF = spark.createDataFrame(
-      spark.sparkContext.parallelize(r3),
-      schema
-    )
+    val tab1 = spark.read.format("csv").schema(schema).option("header", "true").load("src/test/resources/test_input/input_1.csv")
+    
+	val tab2 = spark.read.format("csv").schema(schema).option("header", "true").load("src/test/resources/test_input/input_2.csv")	
+	
+	val expDF = spark.read.format("csv").schema(schema).option("header", "true").load("src/test/resources/test_output/output.csv")	
 
     val resDF=returnUnion(tab1,tab2)
 
