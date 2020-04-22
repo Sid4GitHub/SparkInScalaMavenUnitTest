@@ -4,7 +4,7 @@
   <artifactId>spark-scala-maven-unit-test</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>${project.artifactId}</name>
-  <description>This is a Test project For Learning Scala and Spark With Unit Test</description>
+  <description>This is a Test project For Learning Scala and Spark With Unit Test and Path Coverage</description>
 
 
   <properties>
@@ -17,10 +17,11 @@
   </properties>
 
   <dependencies>
+  
     <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>${scala.version}</version>
+		<groupId>org.scala-lang</groupId>
+		<artifactId>scala-library</artifactId>
+		<version>${scala.version}</version>
     </dependency>
 	
 	<dependency>
@@ -29,17 +30,16 @@
 		<version>2.8</version>
 	</dependency>
 
-
     <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-core_2.12</artifactId>
-      <version>${spark.version}</version>
+		<groupId>org.apache.spark</groupId>
+		<artifactId>spark-core_2.12</artifactId>
+		<version>${spark.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_2.12</artifactId>
-      <version>${spark.version}</version>
+		<groupId>org.apache.spark</groupId>
+		<artifactId>spark-sql_2.12</artifactId>
+		<version>${spark.version}</version>
     </dependency>
 
 	<dependency>
@@ -49,16 +49,15 @@
 		<scope>test</scope>
 	</dependency>
 
-	
-
-
   </dependencies>
 
   <build>
+  
     <sourceDirectory>src/main/scala</sourceDirectory>
     <testSourceDirectory>src/test/scala</testSourceDirectory>
      
     <plugins>
+	
       <plugin>        
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
@@ -78,6 +77,7 @@
           </execution>
         </executions>
       </plugin>
+	  
       <plugin>
 		  <groupId>org.apache.maven.plugins</groupId>
 		  <artifactId>maven-surefire-plugin</artifactId>
@@ -86,6 +86,7 @@
 			<skipTests>true</skipTests>
 		  </configuration>
 		</plugin>
+		
 		<plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
@@ -96,7 +97,7 @@
                     <configuration>
                         <tasks>
                             <delete dir="$${project.build.directory}/surefire-reports"/>
-                            <mkdir dir="${project.build.directory}/test-reports"/>
+                           
                         </tasks>
                     </configuration>
                     <goals>
@@ -105,12 +106,13 @@
                 </execution>
             </executions>
          </plugin>
+		 
 		<plugin>
 		  <groupId>org.scalatest</groupId>
 		  <artifactId>scalatest-maven-plugin</artifactId>
 		  <version>1.0</version>
 		  <configuration>
-			<reportsDirectory>${project.build.directory}/test-reports</reportsDirectory>
+			<reportsDirectory>${project.build.directory}/reports/test-reports</reportsDirectory>
 			<junitxml>.</junitxml>
 			<filereports>WDF TestSuiteReport.txt</filereports>
 		  </configuration>
@@ -122,8 +124,7 @@
 			  </goals>
 			</execution>
 		  </executions>
-		</plugin>
-		
+		</plugin>		
 		
 		<plugin>
 			<groupId>org.jacoco</groupId>
@@ -142,10 +143,9 @@
 						<goal>report</goal>
 					</goals>
 					<configuration>
-						<outputDirectory>target/jacoco-report</outputDirectory>
+						<outputDirectory>target/reports/jacoco-path-coverage-report</outputDirectory>
 					</configuration>
-				</execution>
-				<!-- Add this checking -->
+				</execution>				
 				<execution>
 					<id>jacoco-check</id>
 					<goals>
@@ -162,18 +162,39 @@
 									<limit>
 										<counter>LINE</counter>
 										<value>COVEREDRATIO</value>
-										<minimum>.1</minimum>
+										<minimum>0.01</minimum>
 									</limit>
 								</limits>
 							</rule>
 						</rules>
 					</configuration>
-				</execution>
-				
+				</execution>				
 			</executions>
 		</plugin>
-
+		
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-assembly-plugin</artifactId>
+			<version>2.4.1</version>
+			<configuration>					
+				<appendAssemblyId>false</appendAssemblyId>
+				<descriptorRefs>
+					<descriptorRef>jar-with-dependencies</descriptorRef>
+				</descriptorRefs>	
+			</configuration>
+			<executions>
+			  <execution>
+				<id>make-assembly</id>                                        
+				<phase>package</phase> 
+				<goals>
+					<goal>single</goal>
+				</goals>
+			  </execution>
+			</executions>
+		</plugin>
 		
     </plugins>
+	
   </build>
+  
 </project>
